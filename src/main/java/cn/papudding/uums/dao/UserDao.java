@@ -2,6 +2,7 @@ package cn.papudding.uums.dao;
 
 import cn.papudding.uums.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
@@ -18,4 +19,6 @@ public interface UserDao {
             "(SELECT role_id FROM user_r_role WHERE user_id = " +
             "(SELECT id FROM user where username = '${username}')));")
     List<String> getResourcesByUsername(String username);
+
+    Integer insert(@Param("user") User user);
 }

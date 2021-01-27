@@ -21,11 +21,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //super.configure(http);
-        http.cors().disable()
+        http.cors().disable().csrf().disable()
                 .authorizeRequests()
-
-                .antMatchers("/r/*").authenticated()
-                .anyRequest().permitAll()
+                .antMatchers("/userManage/register").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 //.successForwardUrl("http://localhost:8080")

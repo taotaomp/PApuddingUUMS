@@ -7,13 +7,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService,UserManageService {
     @Autowired
     private UserDao userDao;
     @Override
@@ -31,5 +33,21 @@ public class UserService implements UserDetailsService {
             simpleGrantedAuthorities.add(new SimpleGrantedAuthority(resource));
         }
         return simpleGrantedAuthorities;
+    }
+
+    @Resource
+    private PasswordEncoder passwordEncoder;
+    /**
+     * @param user
+     * @Description: 用户注册
+     * @Param: [user]
+     * @return: boolean
+     * @Author: Hu Songtao
+     * @Date: 2021/1/27
+     */
+    @Override
+    public boolean register(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userDao.insert(user) > 0;
     }
 }
